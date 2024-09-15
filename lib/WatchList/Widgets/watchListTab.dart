@@ -10,9 +10,6 @@ class WatchlistTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.blackColor,
-      appBar: AppBar(
-        title: Text("WatchListTab"),
-      ),
     );
   }
 }
