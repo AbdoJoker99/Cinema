@@ -48,7 +48,7 @@ class _HometabState extends State<Hometab> {
                                   .whiteColorText, // Change color for visibility
                             ),
                           )
-                        : MovieCard(moviecard: null),
+                        : MovieCard(moviecard: viewModel.popularList!.first),
                     SizedBox(height: 10.h),
                     // Upcoming Section
                     viewModel.upComingList == null ||

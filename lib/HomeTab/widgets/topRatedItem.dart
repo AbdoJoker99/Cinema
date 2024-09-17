@@ -97,8 +97,6 @@ class _TopRatedItemState extends State<TopRatedItem> {
             child: Container(
               padding: EdgeInsets.all(5.w),
               decoration: BoxDecoration(
-                color: Colors.black
-                    .withOpacity(0.6), // Dark overlay for better visibility
                 borderRadius: BorderRadius.circular(5),
               ),
               child: Column(
