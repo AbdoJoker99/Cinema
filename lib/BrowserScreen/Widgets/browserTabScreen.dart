@@ -10,7 +10,8 @@ class BrowserTabScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.blackColor,
       appBar: AppBar(
-        title: Text("BrowserScreenTab"),
+        backgroundColor: AppColors.blackColor,
+        toolbarHeight: 5, // Reduced toolbar height
       ),
     );
   }

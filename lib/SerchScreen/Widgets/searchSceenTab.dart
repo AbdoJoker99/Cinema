@@ -11,7 +11,8 @@ class Searchsceentab extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.blackColor,
       appBar: AppBar(
-        title: Text("searchScreenTab"),
+        backgroundColor: AppColors.blackColor,
+        toolbarHeight: 5, // Reduced toolbar height
       ),
     );
   }
