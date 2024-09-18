@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,12 +46,33 @@ class _HometabState extends State<Hometab> {
                       alignment: Alignment.center,
                       child: viewModel.popularList == null ||
                               viewModel.popularList!.isEmpty
-                          ? CircularProgressIndicator(
-                              color: AppColors
-                                  .whiteColorText, // Customize the color
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                color: AppColors
+                                    .whiteColorText, // Customize the color
+                              ),
                             )
-                          : MovieCard(moviecard: viewModel.popularList!.first),
+                          : CarouselSlider.builder(
+                              itemCount: viewModel.popularList!.length,
+                              itemBuilder: (context, index, realIndex) {
+                                return MovieCard(
+                                  moviecard: viewModel.popularList![
+                                      index], // Pass each movie to MovieCard
+                                );
+                              },
+                              options: CarouselOptions(
+                                height: 275
+                                    .h, // Use the same height as the container
+                                enlargeCenterPage: true,
+                                autoPlay: true,
+                                autoPlayInterval: Duration(seconds: 2),
+                                viewportFraction: 0.8,
+                                aspectRatio: 16 / 9,
+                                initialPage: 0,
+                              ),
+                            ),
                     ),
+
                     // SizedBox(height: 5.h),
 
                     // Upcoming Section
