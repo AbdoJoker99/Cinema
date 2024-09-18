@@ -35,7 +35,7 @@ class _upComingSectionState extends State<upComingSection> {
           ),
           SizedBox(height: 20.h),
           SizedBox(
-            height: 175.h, // Wrapping GridView in a SizedBox for height
+            height: 150.h, // Wrapping GridView in a SizedBox for height
             child: GridView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: widget.upComingList.length,

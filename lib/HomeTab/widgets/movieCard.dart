@@ -1,43 +1,68 @@
-import 'package:cinema/HomeTab/widgets/popularItem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../Data/Response/topRatedOrPopularResponse.dart';
 
-class MovieCard extends StatefulWidget {
-  final topRatedOrPopular? moviecard; // Added 'final' here for immutability
+class MovieList extends StatefulWidget {
+  final List<topRatedOrPopular> movieList; // List of movies
+  MovieList({Key? key, required this.movieList}) : super(key: key);
 
+  @override
+  State<MovieList> createState() => _MovieListState();
+}
+
+class _MovieListState extends State<MovieList> {
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: widget.movieList.length, // Number of movies in the list
+      itemBuilder: (context, index) {
+        return MovieCard(
+          moviecard: widget.movieList[index], // Pass each movie to MovieCard
+        );
+      },
+    );
+  }
+}
+
+class MovieCard extends StatefulWidget {
+  final topRatedOrPopular? moviecard;
   MovieCard({Key? key, required this.moviecard}) : super(key: key);
+
   @override
   State<MovieCard> createState() => _MovieCardState();
 }
 
 class _MovieCardState extends State<MovieCard> {
-  // Fixed constructor
+  bool _isFavorite = false;
+
+  void _saveIconState() {
+    // Implement save logic here
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity, // Ensure the card takes full width of its parent
-      height: 275.h, // Set a specific height for the card
+      width: double.infinity,
+      height: 275.h,
       child: Stack(
         children: [
-          // Movie Poster and Background with some opacity
+          // Movie Poster and Background
           Positioned(
             top: 0,
             left: 0,
             right: 0,
-            bottom: 70.h, // Adjust this bottom position
+            bottom: 70.h,
             child: Opacity(
-              opacity: 0.8, // Adjust this as needed
-              child: Image.asset(
-                'https://image.tmdb.org/t/p/w500${widget.moviecard?.backdropPath}', // Use moviecard backdrop image dynamically
-                width: double.infinity, // Full width of the screen
-                height: 250.h, // Set a specific height for the card
-                fit: BoxFit
-                    .cover, // Ensure the image covers the entire container
+              opacity: 0.8,
+              child: Image.network(
+                'https://image.tmdb.org/t/p/w500${widget.moviecard?.backdropPath}',
+                width: double.infinity,
+                height: 300.h,
+                fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Image.asset(
-                    'assets/images/Image.png', // Placeholder image if backdrop fails
+                    'assets/images/Image.png',
                     width: double.infinity,
                     height: 250.h,
                     fit: BoxFit.cover,
@@ -46,18 +71,17 @@ class _MovieCardState extends State<MovieCard> {
               ),
             ),
           ),
-          // Overlaying Play Button and Movie Info
+          // Play Button and Movie Info
           Positioned(
-            top: 50.h, // Align this block to the bottom of the container
+            top: 50.h,
             left: 0,
-            right: 0, // Center the content horizontally
+            right: 0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Play Button Overlay
                 InkWell(
                   onTap: () {
-                    // Add your navigation logic here (e.g., navigate to description page)
+                    // Navigation logic
                   },
                   child: Container(
                     width: 50.w,
@@ -66,8 +90,8 @@ class _MovieCardState extends State<MovieCard> {
                       shape: BoxShape.circle,
                     ),
                     child: Image.asset(
-                      'assets/images/play-button-2.png', // Replace with your image path for play button
-                      width: 60.w, // Adjust the play button size
+                      'assets/images/play-button-2.png',
+                      width: 60.w,
                       height: 60.h,
                       fit: BoxFit.cover,
                     ),
@@ -76,60 +100,77 @@ class _MovieCardState extends State<MovieCard> {
               ],
             ),
           ),
-          SizedBox(height: 10.h), // Space between the play button and text
-          // Movie title and release date inside a container
+          SizedBox(height: 10.h),
+          // Movie title and release date
           Positioned(
             right: 10.w,
             top: 210.h,
             child: Container(
               width: 250.w,
-              height: 100.h, // Adjust this width based on your design needs
-              padding: EdgeInsets.symmetric(
-                  vertical: 5.h), // Padding for the text container
+              height: 100.h,
+              padding: EdgeInsets.symmetric(vertical: 5.h),
               child: Column(
                 children: [
                   // Movie Title
                   Text(
-                    widget.moviecard?.title ??
-                        'Unknown Title', // Dynamic movie title
+                    widget.moviecard?.title ?? 'Unknown Title',
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          color: Colors.white, // Set text color to white
-                          fontWeight:
-                              FontWeight.bold, // Add bold styling for title
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
-                    maxLines: 1, // Limit title to a single line
-                    overflow: TextOverflow
-                        .ellipsis, // Add ellipsis if title overflows
-                    textAlign: TextAlign.center, // Center align the title text
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
                   ),
                   // Movie Date and Details
                   Text(
-                    '${widget.moviecard?.releaseDate ?? ''} • PG-13 • 2h 7m', // Dynamic release date
+                    '${widget.moviecard?.releaseDate ?? ''} • PG-13 • 2h 7m',
                     style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: Colors.white70, // Lighter text for the details
+                          color: Colors.white70,
                         ),
-                    textAlign:
-                        TextAlign.center, // Center align the details text
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
             ),
           ),
-          // Positioned smaller image at the bottom-left
+          // Smaller image at the bottom-left
           Positioned(
             top: 95.h,
-            bottom: 0.h, // Adjust bottom position as needed
-            left: 10.w, // Adjust left position as needed
+            bottom: 0.h,
+            left: 10.w,
             child: Container(
-              width: 120.w,
-              height: 220.h, // Adjust the size to match the smaller image size
+              margin: EdgeInsets.all(10),
+              height: 140.h,
+              width: 100.w,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(
-                    8), // Add rounded corners if necessary
+                image: DecorationImage(
+                  image: NetworkImage(
+                    'https://image.tmdb.org/t/p/w500${widget.moviecard?.posterPath ?? ""}',
+                  ),
+                  fit: BoxFit.cover,
+                ),
               ),
-              child: popularitem(
-                moviecard: null,
-              ), // This is your custom widget for the smaller image
+            ),
+          ),
+          // Bookmark Icon
+          Positioned(
+            left: 15.w,
+            top: 105.h,
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _isFavorite = !_isFavorite; // Toggle state
+                  _saveIconState(); // Save state
+                });
+              },
+              child: Image.asset(
+                _isFavorite
+                    ? 'assets/images/bookmark.png'
+                    : 'assets/images/Icon awesome-bookmark.png',
+                width: 30.w,
+                height: 40.h,
+              ),
             ),
           ),
         ],

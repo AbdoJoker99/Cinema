@@ -79,25 +79,6 @@ class _UpcomingitemState extends State<Upcomingitem> {
           ),
         ),
         // Add movie title at the bottom
-        Positioned(
-          bottom: 10.h,
-          left: 10.w,
-          right: 10.w,
-          child: Container(
-            color: Colors.black.withOpacity(0.5),
-            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
-            child: Text(
-              movie?.title ?? 'Unknown', // Movie title from the data
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 12.sp, // Font size for title
-                fontWeight: FontWeight.bold,
-              ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ),
       ],
     );
   }

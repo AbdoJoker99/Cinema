@@ -40,41 +40,51 @@ class _HometabState extends State<Hometab> {
                 child: Column(
                   children: [
                     // Popular Section
-                    viewModel.popularList == null ||
-                            viewModel.popularList!.isEmpty
-                        ? Center(
-                            child: CircularProgressIndicator(
+                    Container(
+                      height: 275.h, // Define height for Popular section
+                      alignment: Alignment.center,
+                      child: viewModel.popularList == null ||
+                              viewModel.popularList!.isEmpty
+                          ? CircularProgressIndicator(
                               color: AppColors
-                                  .whiteColorText, // Change color for visibility
-                            ),
-                          )
-                        : MovieCard(moviecard: viewModel.popularList!.first),
-                    SizedBox(height: 10.h),
+                                  .whiteColorText, // Customize the color
+                            )
+                          : MovieCard(moviecard: viewModel.popularList!.first),
+                    ),
+                    // SizedBox(height: 5.h),
+
                     // Upcoming Section
-                    viewModel.upComingList == null ||
-                            viewModel.upComingList!.isEmpty
-                        ? Center(
-                            child: CircularProgressIndicator(
+                    Container(
+                      height: 215.h, // Define height for Upcoming section
+                      alignment: Alignment.center,
+                      child: viewModel.upComingList == null ||
+                              viewModel.upComingList!.isEmpty
+                          ? CircularProgressIndicator(
                               color: AppColors.whiteColorText,
+                            )
+                          : upComingSection(
+                              name: 'New Releases',
+                              upComingList: viewModel.upComingList!,
                             ),
-                          )
-                        : upComingSection(
-                            name: 'New Releases',
-                            upComingList: viewModel.upComingList!,
-                          ),
-                    SizedBox(height: 10.h),
+                    ),
+                    SizedBox(height: 25.h),
+
                     // Top Rated Section
-                    viewModel.topRatedList == null ||
-                            viewModel.topRatedList!.isEmpty
-                        ? Center(
-                            child: CircularProgressIndicator(
+                    Container(
+                      height: 240.h,
+                      color: AppColors
+                          .greySearchBarColor, // Define height for Top Rated section
+                      alignment: Alignment.center,
+                      child: viewModel.topRatedList == null ||
+                              viewModel.topRatedList!.isEmpty
+                          ? CircularProgressIndicator(
                               color: AppColors.whiteColorText,
+                            )
+                          : TopRatedSection(
+                              name: 'Recommended',
+                              topRatedList: viewModel.topRatedList!,
                             ),
-                          )
-                        : TopRatedSection(
-                            name: 'Recommended',
-                            topRatedList: viewModel.topRatedList!,
-                          ),
+                    ),
                   ],
                 ),
               ),

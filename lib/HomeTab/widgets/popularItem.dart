@@ -57,8 +57,9 @@ class _popularitemState extends State<popularitem> {
         ),
         // The tappable icon image overlaid on the main image
         Positioned(
-          left: 10.w,
-          top: 10.h,
+          left: 20.w,
+          top: 90.h,
+          bottom: 200.h,
           child: GestureDetector(
             onTap: () {
               setState(() {
