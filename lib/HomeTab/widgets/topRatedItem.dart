@@ -48,10 +48,6 @@ class _TopRatedItemState extends State<TopRatedItem> {
         width: 120.w, // Adjusted container width for screen responsiveness
         height: 160.h, // Adjusted container height for screen responsiveness
         decoration: BoxDecoration(
-          border: Border.all(
-            color: AppColors.backgroundColor, // Black border with 50% opacity
-            width: 1.0, // Border width
-          ),
           borderRadius:
               BorderRadius.circular(5), // Optional: Add rounded corners
         ),
