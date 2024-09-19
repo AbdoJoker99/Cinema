@@ -95,7 +95,7 @@ class _HometabState extends State<Hometab> {
                     Container(
                       height: 240.h,
                       color: AppColors
-                          .greySearchBarColor, // Define height for Top Rated section
+                          .greySearchBarColor, // Ensure this color is visible with your content
                       alignment: Alignment.center,
                       child: viewModel.topRatedList == null ||
                               viewModel.topRatedList!.isEmpty

@@ -58,7 +58,7 @@ class _TopRatedItemState extends State<TopRatedItem> {
             Container(
               margin: EdgeInsets.all(10.w),
               height: 110.h, // Set the image height
-              width: 100.w, // Set the image width
+              width: 110.w, // Set the image width
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: NetworkImage(
@@ -127,7 +127,7 @@ class _TopRatedItemState extends State<TopRatedItem> {
                     Text(
                       '${widget.topratedorpopular!.title ?? ""}', // Movie title
                       style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                          color: AppColors.whiteColorText, fontSize: 9.sp),
+                          color: AppColors.whiteColorText, fontSize: 8.sp),
 
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -140,7 +140,7 @@ class _TopRatedItemState extends State<TopRatedItem> {
                       style: Theme.of(context)
                           .textTheme
                           .titleSmall!
-                          .copyWith(color: AppColors.greyColor, fontSize: 9.sp),
+                          .copyWith(color: AppColors.greyColor, fontSize: 8.sp),
 
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
