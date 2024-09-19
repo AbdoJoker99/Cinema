@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Data/Response/topRatedOrPopularResponse.dart';
 
@@ -23,7 +24,7 @@ class _MovieListState extends State<MovieList> {
     _movies = widget.movieList; // Initialize with the provided list
 
     // Set a timer to update the movie list every second
-    Timer.periodic(Duration(seconds: 1), (Timer timer) {
+    Timer.periodic(Duration(seconds: 2), (Timer timer) {
       setState(() {
         _movies.shuffle();
       });
@@ -63,8 +64,26 @@ class MovieCard extends StatefulWidget {
 class _MovieCardState extends State<MovieCard> {
   bool _isFavorite = false;
 
-  void _saveIconState() {
-    // Implement save logic here
+  @override
+  void initState() {
+    super.initState();
+    _loadIconState(); // Load the saved favorite state
+  }
+
+  // Load the saved state of the icon image from SharedPreferences for each movie
+  void _loadIconState() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      // Use the movie's unique ID to get its saved state
+      _isFavorite =
+          prefs.getBool('isFavorite_${widget.moviecard?.id}') ?? false;
+    });
+  }
+
+  // Save the icon state to SharedPreferences for each movie
+  void _saveIconState() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isFavorite_${widget.moviecard?.id}', _isFavorite);
   }
 
   @override
@@ -130,7 +149,8 @@ class _MovieCardState extends State<MovieCard> {
           SizedBox(height: 10.h),
           // Movie title and release date
           Positioned(
-            right: 10.w,
+            left: 120.w,
+            right: 5.w,
             top: 210.h,
             child: Container(
               width: 250.w,
@@ -193,8 +213,8 @@ class _MovieCardState extends State<MovieCard> {
               },
               child: Image.asset(
                 _isFavorite
-                    ? 'assets/images/bookmark.png'
-                    : 'assets/images/Icon awesome-bookmark.png',
+                    ? 'assets/images/Icon awesome-bookmark.png'
+                    : 'assets/images/bookmark.png',
                 width: 30.w,
                 height: 40.h,
               ),

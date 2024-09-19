@@ -71,8 +71,9 @@ class _UpcomingitemState extends State<Upcomingitem> {
             },
             child: Image.asset(
               _isFavorite
-                  ? 'assets/images/bookmark.png' // Selected state image
-                  : 'assets/images/Icon awesome-bookmark.png', // Unselected state image
+                  ? 'assets/images/Icon awesome-bookmark.png'
+                  // Selected state image
+                  : 'assets/images/bookmark.png', // Unselected state image
               width: 30.w, // Set the width of the icon image
               height: 40.h, // Set the height of the icon image
             ),
