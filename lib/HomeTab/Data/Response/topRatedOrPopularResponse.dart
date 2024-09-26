@@ -55,6 +55,7 @@ class topRatedOrPopular {
     this.video,
     this.voteAverage,
     this.voteCount,
+    this.isFavorite = false,
   });
 
   topRatedOrPopular.fromJson(dynamic json) {
@@ -87,6 +88,7 @@ class topRatedOrPopular {
   bool? video;
   num? voteAverage;
   num? voteCount;
+  bool? isFavorite;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

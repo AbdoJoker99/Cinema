@@ -1,45 +1,43 @@
+import 'package:cinema/myAssets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../dataBrowser/responseBrowser/browserDiscoveryRespone.dart';
 import '../dataBrowser/responseBrowser/browserResponse.dart';
 
-class Browseritem extends StatefulWidget {
+class BrowserItem extends StatelessWidget {
   final Browser? browser;
-  Browseritem({super.key, required this.browser});
+  final reselt? discoveryMovie;
 
-  @override
-  State<Browseritem> createState() => _BrowseritemState();
-}
+  const BrowserItem({Key? key, this.browser, this.discoveryMovie})
+      : super(key: key);
 
-class _BrowseritemState extends State<Browseritem> {
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Background Image
         Container(
           width: double.infinity,
-          height: 150.h, // Adjust height accordingly
+          height: 150.h,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(_getImageForGenre()), // Dynamically set image
+              image: _getImageProvider(),
               fit: BoxFit.cover,
             ),
           ),
         ),
-        // Centered text
         Center(
           child: Text(
-            "${widget.browser!.name ?? "movie"}", // Fallback if browser or name is null
+            _getItemName(),
             style: TextStyle(
-              fontSize: 32.sp, // Adjust the font size accordingly
+              fontSize: 32.sp,
               fontWeight: FontWeight.bold,
-              color: Colors.white, // White color to contrast the background
+              color: Colors.white,
               shadows: [
                 Shadow(
                   blurRadius: 10.0.r,
                   color: Colors.black.withOpacity(0.7),
-                  offset: Offset(2, 2),
+                  offset: const Offset(2, 2),
                 ),
               ],
             ),
@@ -49,19 +47,31 @@ class _BrowseritemState extends State<Browseritem> {
     );
   }
 
-  // Function to get the image based on the genre name
-  String _getImageForGenre() {
-    switch (widget.browser?.name?.toLowerCase()) {
-      case 'comedy':
-        return 'assets/images/best-comedies-1624977335.jpg'; // Path to Comedy image
-      case 'horror':
-        return 'assets/images/download (4).jpg'; // Path to Horror image
-      case 'action':
-        return 'assets/images/download (2).jpg'; // Path to Action image
-      case 'animation':
-        return 'assets/images/download (3).jpg'; // Path to Animation image
-      default:
-        return 'assets/images/download (1).jpg'; // Default image for other genres
+  ImageProvider _getImageProvider() {
+    if (discoveryMovie?.posterPath != null) {
+      return NetworkImage(
+          'https://image.tmdb.org/t/p/w500${discoveryMovie!.posterPath}');
     }
+
+    return AssetImage(_getDefaultImageForGenre());
+  }
+
+  String _getDefaultImageForGenre() {
+    switch (browser?.name?.toLowerCase()) {
+      case 'comedy':
+        return MyAssets.BestCommedies;
+      case 'horror':
+        return MyAssets.download4;
+      case 'action':
+        return MyAssets.download2;
+      case 'animation':
+        return MyAssets.download3;
+      default:
+        return MyAssets.download1;
+    }
+  }
+
+  String _getItemName() {
+    return discoveryMovie?.title ?? browser?.name ?? "Movie";
   }
 }

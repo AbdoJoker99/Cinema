@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../firebase_utils.dart';
 import '../Data/Response/topRatedOrPopularResponse.dart';
 
 class MovieList extends StatefulWidget {
@@ -201,23 +202,34 @@ class _MovieCardState extends State<MovieCard> {
             ),
           ),
           // Bookmark Icon
+          // Bookmark Icon
           Positioned(
             left: 15.w,
             top: 105.h,
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _isFavorite = !_isFavorite; // Toggle state
-                  _saveIconState(); // Save state
-                });
-              },
-              child: Image.asset(
+            child: IconButton(
+              icon: Image.asset(
                 _isFavorite
                     ? 'assets/images/Icon awesome-bookmark.png'
                     : 'assets/images/bookmark.png',
                 width: 30.w,
                 height: 40.h,
               ),
+              onPressed: () async {
+                _isFavorite = !_isFavorite; // Toggle state
+                _saveIconState(); // Save state
+                if (_isFavorite) {
+                  await Firestore.addMovieToFirestore(
+                    context,
+                    widget.moviecard!.title ?? '',
+                    'https://image.tmdb.org/t/p/w500${widget.moviecard!.posterPath}' ??
+                        '',
+                    widget.moviecard!.releaseDate ?? "",
+                  );
+                } else {
+                  await Firestore.removeMovieByTitle(
+                      widget.moviecard!.title ?? '');
+                }
+              },
             ),
           ),
         ],

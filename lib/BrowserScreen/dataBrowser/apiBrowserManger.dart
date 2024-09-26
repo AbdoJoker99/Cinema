@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cinema/BrowserScreen/dataBrowser/responseBrowser/browserDiscoveryRespone.dart';
 import 'package:cinema/BrowserScreen/dataBrowser/responseBrowser/browserResponse.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,6 +22,27 @@ class ApibrowserManger {
         var json = jsonDecode(response.body);
         print('API Response: $json');
         return BrowserResponse.fromJson(json);
+      } else {
+        throw Exception(
+            'Failed to load movies. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching data: $e');
+      throw e;
+    }
+  }
+
+  static Future<BrowserDiscoveryResponse> getAllDiscoveryMovieList(
+      String genderId) async {
+    Uri url = Uri.https(baseUrl, browserEndPoints.DiscoverMovieList,
+        {'api_key': apiKey, 'with_genres': genderId});
+    try {
+      var response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        var json = jsonDecode(response.body);
+        print('API Response: $json');
+        return BrowserDiscoveryResponse.fromJson(json);
       } else {
         throw Exception(
             'Failed to load movies. Status code: ${response.statusCode}');

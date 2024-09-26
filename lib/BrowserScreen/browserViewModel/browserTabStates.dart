@@ -1,17 +1,30 @@
-import '../dataBrowser/responseBrowser/browserResponse.dart';
+import 'package:cinema/BrowserScreen/dataBrowser/responseBrowser/browserDiscoveryRespone.dart';
+import 'package:cinema/BrowserScreen/dataBrowser/responseBrowser/browserResponse.dart';
 
-abstract class browserTabStates {}
+abstract class BrowserTabStates {}
 
-class browserTabInitialState extends browserTabStates {}
+class BrowserTabInitialState extends BrowserTabStates {}
 
-class browserTabLoadinglState extends browserTabStates {}
+class BrowserTabLoadinglState extends BrowserTabStates {}
 
-class browserTabErrorState extends browserTabStates {
+class BrowserTabErrorState extends BrowserTabStates {
   String errorMessage;
-  browserTabErrorState({required this.errorMessage});
+  BrowserTabErrorState({required this.errorMessage});
 }
 
-class browserTabSuccsesState extends browserTabStates {
+class BrowserTabSuccessState extends BrowserTabStates {
   BrowserResponse browserResponse;
-  browserTabSuccsesState({required this.browserResponse});
+  BrowserTabSuccessState({required this.browserResponse});
+}
+
+class BrowserDiscoveryTabLoadinglState extends BrowserTabStates {}
+
+class BrowserDiscoveryTabErrorState extends BrowserTabStates {
+  String errorMessage;
+  BrowserDiscoveryTabErrorState({required this.errorMessage});
+}
+
+class BrowserDiscoveryTabSuccessState extends BrowserTabStates {
+  BrowserDiscoveryResponse browserDiscoveryResponse;
+  BrowserDiscoveryTabSuccessState({required this.browserDiscoveryResponse});
 }

@@ -1,6 +1,9 @@
 import 'package:cinema/AppColors.dart';
 import 'package:cinema/BrowserScreen/browserViewModel/browserTabStates.dart';
 import 'package:cinema/BrowserScreen/browserViewModel/browserTabViewModel.dart';
+import 'package:cinema/BrowserScreen/dataBrowser/responseBrowser/browserDiscoveryRespone.dart';
+import 'package:cinema/BrowserScreen/dataBrowser/responseBrowser/browserResponse.dart';
+import 'package:cinema/homeScreen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,81 +13,132 @@ import 'Browseritem.dart';
 class BrowserTabScreen extends StatefulWidget {
   static const String routeName = "browser";
 
-  BrowserTabScreen({Key? key}) : super(key: key);
+  const BrowserTabScreen({Key? key}) : super(key: key);
 
   @override
   State<BrowserTabScreen> createState() => _BrowserTabScreenState();
 }
 
 class _BrowserTabScreenState extends State<BrowserTabScreen> {
-  final browserTabViewModel viewModel = browserTabViewModel();
+  late final BrowserTabViewModel viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel = BrowserTabViewModel();
+    viewModel.getAllMovieList();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<browserTabViewModel, browserTabStates>(
-      bloc: viewModel..getAllMovieList(),
-      builder: (BuildContext context, browserTabStates state) {
-        return Scaffold(
+    return BlocProvider(
+      create: (context) => viewModel,
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
           backgroundColor: AppColors.blackColor,
           appBar: AppBar(
             backgroundColor: AppColors.blackColor,
-            toolbarHeight: 50, // Adjusted toolbar height for visibility
+            toolbarHeight: 50,
+            bottom: const TabBar(
+              tabs: [
+                Tab(text: 'Genres'),
+                Tab(text: 'Discovery'),
+              ],
+            ),
           ),
-          body: Container(
-            margin: const EdgeInsets.all(5),
-            color: AppColors.blackColor,
-            child: _buildBodyContent(state), // Build content based on state
+          body: TabBarView(
+            children: [
+              // Genres Tab
+              BlocBuilder<BrowserTabViewModel, BrowserTabStates>(
+                builder: (context, state) {
+                  if (state is BrowserTabLoadinglState) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is BrowserTabErrorState) {
+                    return Center(
+                      child: Text(
+                        state.errorMessage,
+                        style: TextStyle(color: Colors.red, fontSize: 18.sp),
+                      ),
+                    );
+                  } else if (state is BrowserTabSuccessState) {
+                    var genres = state.browserResponse.genres ?? [];
+                    return _buildMovieGrid(genres: genres, isDiscovery: false);
+                  }
+
+                  var cachedGenres = viewModel.cachedGenres;
+                  if (cachedGenres != null && cachedGenres.isNotEmpty) {
+                    return _buildMovieGrid(
+                        genres: cachedGenres, isDiscovery: false);
+                  }
+
+                  return const Center(child: SizedBox());
+                },
+              ),
+              // Discovery Tab
+              BlocBuilder<BrowserTabViewModel, BrowserTabStates>(
+                builder: (context, state) {
+                  if (state is BrowserDiscoveryTabLoadinglState) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is BrowserDiscoveryTabErrorState) {
+                    return Center(
+                      child: Text(
+                        state.errorMessage,
+                        style: TextStyle(color: Colors.red, fontSize: 18.sp),
+                      ),
+                    );
+                  } else if (state is BrowserDiscoveryTabSuccessState) {
+                    var discoveryMovies =
+                        state.browserDiscoveryResponse.results ?? [];
+                    return Column(
+                      children: [
+                        Expanded(
+                            child: _buildMovieGrid(
+                                genres: discoveryMovies, isDiscovery: true)),
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, HomeScreen.routeName);
+                            },
+                            child: Text('Go to Home'))
+                      ],
+                    );
+                  }
+                  return const Center(child: Text('No Data Available'));
+                },
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 
-  Widget _buildBodyContent(browserTabStates state) {
-    if (state is browserTabLoadinglState) {
-      return const Center(
-        child: CircularProgressIndicator(), // Show loading indicator
-      );
-    } else if (state is browserTabErrorState) {
-      return Center(
-        child: Text(
-          state.errorMessage,
-          style: TextStyle(color: Colors.red, fontSize: 18.sp),
-        ),
-      );
-    } else if (state is browserTabSuccsesState) {
-      if (viewModel.browserList == null || viewModel.browserList!.isEmpty) {
-        return Center(
-          child: Text(
-            'No movies available',
-            style: TextStyle(fontSize: 18.sp, color: AppColors.whiteColorText),
-          ),
-        );
-      } else {
-        return _buildMovieGrid(); // Display the movie grid when data is available
-      }
-    }
-    return const SizedBox.shrink(); // Fallback if state doesn't match
-  }
-
-  // Extract the grid view into its own method
-  Widget _buildMovieGrid() {
+  Widget _buildMovieGrid(
+      {required List<dynamic> genres, required bool isDiscovery}) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       child: GridView.builder(
-        itemCount: viewModel.browserList!.length,
+        itemCount: genres.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, // Two items per row
-          mainAxisSpacing: 20, // Spacing between rows
-          crossAxisSpacing: 20, // Spacing between columns
+          crossAxisCount: 2,
+          mainAxisSpacing: 20,
+          crossAxisSpacing: 20,
         ),
         itemBuilder: (context, index) {
+          final item = genres[index];
           return InkWell(
             onTap: () {
-              // Handle item tap if necessary
+              if (!isDiscovery) {
+                String genreId = item.id.toString();
+                viewModel.getAllDiscoveryMovieList(genreId);
+
+                DefaultTabController.of(context).animateTo(1);
+              }
             },
-            child: Browseritem(
-              browser: viewModel.browserList![index], // Use null-safe access
+            child: BrowserItem(
+              browser: isDiscovery ? null : item as Browser,
+              discoveryMovie: isDiscovery ? item as reselt : null,
             ),
           );
         },

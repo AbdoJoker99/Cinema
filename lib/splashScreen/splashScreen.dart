@@ -1,4 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+
+import '../homeScreen/home_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   static const String routeName = "splash";
@@ -6,6 +10,15 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    Timer(Duration(seconds: 3), () {
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+    });
+    return Scaffold(
+        body: Image.asset(
+      'assets/images/splash.png',
+      fit: BoxFit.cover,
+      width: double.infinity,
+      height: double.infinity,
+    ));
   }
 }

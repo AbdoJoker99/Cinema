@@ -3,6 +3,7 @@ import 'package:cinema/HomeTab/widgets/topRatedItem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../MovieDetails(homeTab)/movie_details_screen.dart';
 import '../Data/Response/topRatedOrPopularResponse.dart';
 
 class TopRatedSection extends StatefulWidget {
@@ -41,7 +42,14 @@ class _TopRatedSectionState extends State<TopRatedSection> {
             itemCount: widget.topRatedList.length,
             itemBuilder: (context, index) {
               return InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MovieDetailsScreen(
+                              movieId:
+                                  widget.topRatedList[index].id!.toInt())));
+                },
                 child: TopRatedItem(
                   // Assuming CardItem is a widget you've defined
                   topratedorpopular:
@@ -51,6 +59,8 @@ class _TopRatedSectionState extends State<TopRatedSection> {
             },
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 1,
+              childAspectRatio: 1.7,
+
             ),
           ),
         ),

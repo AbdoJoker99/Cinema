@@ -3,6 +3,7 @@ import 'package:cinema/HomeTab/widgets/upComingItem.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../MovieDetails(homeTab)/movie_details_screen.dart';
 import '../Data/Response/upComingResponse.dart';
 
 class upComingSection extends StatefulWidget {
@@ -41,7 +42,14 @@ class _upComingSectionState extends State<upComingSection> {
               itemCount: widget.upComingList.length,
               itemBuilder: (context, index) {
                 return InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MovieDetailsScreen(
+                                movieId:
+                                    widget.upComingList[index].id!.toInt())));
+                  },
                   child: Upcomingitem(
                     // Assuming CardItem is a widget you've defined
                     upcoming: widget.upComingList[index], // Pass correct data
@@ -50,8 +58,9 @@ class _upComingSectionState extends State<upComingSection> {
               },
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 1, // Single row, multiple columns
-                mainAxisSpacing: 0, // No spacing between items horizontally
-                crossAxisSpacing: 0, // No spacing between items vertically
+                childAspectRatio: 1.3,
+
+
               ),
             ),
           ),

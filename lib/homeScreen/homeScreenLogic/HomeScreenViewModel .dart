@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../BrowserScreen/Widgets/browserTabScreen.dart';
 import '../../HomeTab/widgets/homeTab.dart';
-import '../../WatchList/Widgets/watchListTab.dart';
+import '../../WatchList/watchListTab.dart';
 import 'homeScreenStates.dart';
 
 class HomeScreenViewModel extends Cubit<HomeScreenStates> {
@@ -16,7 +16,7 @@ class HomeScreenViewModel extends Cubit<HomeScreenStates> {
     Hometab(),
     Searchsceentab(),
     BrowserTabScreen(),
-    WatchlistTab()
+    WatchListTab()
   ];
   void channgeSelecedIndex(int newIndex) {
     emit(HomeInitialstate());
