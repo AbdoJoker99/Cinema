@@ -37,23 +37,21 @@ class ApiSearchManager {
   }
 
   static Future<MovieResponse> searchMovies(String query) async {
-    final apiKey = "092d1e0bb1cb68908930364d656c5a41";
-    final url = Uri.parse(
-        "https://api.themoviedb.org/3/search/movie?api_key=$apiKey&query=$query");
-
+    Uri url = Uri.https(baseUrl, '3/search/movie', {'query': query});
+    var headers = {
+      'accept': 'application/json',
+      'Authorization':
+          'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlN2MzOGFjMmFkNDZlMTNjZWRkZmJkODY4MWVmMDljNiIsIm5iZiI6MTcyNjU4MzMwMi4zMzU0NDEsInN1YiI6IjY2ZTk5MDEyMWJlY2E4Y2UwN2QyZTliYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.yfWSVG40lcpxu1MYOZOUEwY_15NdwS7JvIfDrFsEMhs'
+    };
     try {
-      final response = await http.get(url);
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        var bodyString = response.body;
-        var json = jsonDecode(bodyString);
-
-        return MovieResponse.fromJson(json);
+      final response = await http.get(url, headers: headers);
+      if (response.statusCode == 200) {
+        return MovieResponse.fromJson(json.decode(response.body));
       } else {
-        throw Exception(
-            'Failed to load search results: ${response.statusCode}');
+        throw Exception("${response.statusCode}");
       }
     } catch (e) {
-      throw Exception('Error fetching search results: $e');
+      throw Exception(e.toString());
     }
   }
 }

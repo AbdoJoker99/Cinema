@@ -4,23 +4,18 @@ import '../ApiSearchManger.dart';
 import '../Respone/SearchRespone.dart';
 import 'movie_State.dart';
 
-class Searchtabviewmodel extends Cubit<searchStates> {
-  Searchtabviewmodel() : super(SearchStatesInitial());
-  List<moviess>? searchlist;
-
-  void searchMovies() async {
+class Searchtabviewmodel extends Cubit<Searchstates> {
+  Searchtabviewmodel() : super(searchInitState());
+  List<Search> searchlist = [];
+  void searchMovie({required String query}) async {
     try {
-      emit(SearchStatesLoading());
-      var response =
-          await ApiSearchManager.searchMovies(ApiSearchManager.baseUrl);
-      if (response.status_message == "fail") {
-        emit(SearchStatesError(errorMsg: response.message!));
-      } else {
-        searchlist = response.results ?? [];
-        emit(SearchStatesSuccess(SearchResponse: response));
-      }
+      emit(searchLoadingState());
+      var response = await ApiSearchManager.searchMovies(query);
+      searchlist = response.results ?? [];
+      emit(searchSuccessState(response: response));
     } catch (e) {
-      emit(SearchStatesError(errorMsg: e.toString()));
+      emit(searchErrorState(errorMessage: e.toString()));
+      throw e; // Consider logging or handling the error appropriately
     }
   }
 }

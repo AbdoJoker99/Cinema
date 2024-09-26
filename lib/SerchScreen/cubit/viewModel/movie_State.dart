@@ -1,19 +1,17 @@
 import '../Respone/SearchRespone.dart';
 
-abstract class searchStates {}
+abstract class Searchstates {}
 
-class SearchStatesInitial extends searchStates {}
+class searchInitState extends Searchstates {}
 
-class SearchStatesLoading extends searchStates {}
+class searchLoadingState extends Searchstates {}
 
-class SearchStatesSuccess extends searchStates {
-  MovieResponse SearchResponse;
-
-  SearchStatesSuccess({required this.SearchResponse});
+class searchSuccessState extends Searchstates {
+  MovieResponse response;
+  searchSuccessState({required this.response});
 }
 
-class SearchStatesError extends searchStates {
-  String errorMsg;
-
-  SearchStatesError({required this.errorMsg});
+class searchErrorState extends Searchstates {
+  final String errorMessage;
+  searchErrorState({required this.errorMessage});
 }
