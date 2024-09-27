@@ -28,37 +28,8 @@ class MovieDetailsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                BlocBuilder<MovieDetailsViewModel, MovieDetailsStates>(
-                  builder: (context, state) {
-                    if (state is MovieDetailsLoadingState) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (state is MovieDetailsSuccessState) {
-                      return _buildMovieDetails(state.details);
-                    } else if (state is MovieDetailsErrorState) {
-                      return Center(child: Text(state.errorMsg));
-                    } else {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-                SizedBox(height: 20.h), // Add some space between the sections
-                BlocBuilder<MovieDetailsViewModel, MovieDetailsStates>(
-                  builder: (context, state) {
-                    if (state is MovieSimilarDetailsLoadingState) {
-                      return Container(
-                        height: 200.h,
-                        child: Center(child: CircularProgressIndicator()),
-                      );
-                    } else if (state is MovieSimilarDetailsSuccessState) {
-                      return _buildSimilarMoviesSection(
-                          state.similarDetails.results!);
-                    } else if (state is MovieSimilarDetailsErrorState) {
-                      return Center(child: Text(state.errorMsg));
-                    } else {
-                      return SizedBox.shrink();
-                    }
-                  },
-                ),
+                // Combine both sections in a single widget tree
+                MovieDetailsAndSimilarMovies(),
               ],
             ),
           ),
@@ -66,7 +37,69 @@ class MovieDetailsScreen extends StatelessWidget {
       ),
     );
   }
+}
 
+// Widget to display both MovieDetails and SimilarMovies
+class MovieDetailsAndSimilarMovies extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        // Movie Details Section
+        BlocSelector<MovieDetailsViewModel, MovieDetailsStates,
+            MovieDetailsStates?>(
+          selector: (state) {
+            if (state is MovieDetailsLoadingState ||
+                state is MovieDetailsSuccessState ||
+                state is MovieDetailsErrorState) {
+              return state;
+            }
+            return null;
+          },
+          builder: (context, state) {
+            if (state is MovieDetailsLoadingState) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is MovieDetailsSuccessState) {
+              return _buildMovieDetails(state.details);
+            } else if (state is MovieDetailsErrorState) {
+              return Center(child: Text(state.errorMsg));
+            } else {
+              return SizedBox();
+            }
+          },
+        ),
+        SizedBox(height: 20.h), // Add some space between the sections
+        // Similar Movies Section
+        BlocSelector<MovieDetailsViewModel, MovieDetailsStates,
+            MovieDetailsStates?>(
+          selector: (state) {
+            if (state is MovieSimilarDetailsLoadingState ||
+                state is MovieSimilarDetailsSuccessState ||
+                state is MovieSimilarDetailsErrorState) {
+              return state;
+            }
+            return null;
+          },
+          builder: (context, state) {
+            if (state is MovieSimilarDetailsLoadingState) {
+              return Container(
+                height: 200.h,
+                child: Center(child: CircularProgressIndicator()),
+              );
+            } else if (state is MovieSimilarDetailsSuccessState) {
+              return _buildSimilarMoviesSection(state.similarDetails.results!);
+            } else if (state is MovieSimilarDetailsErrorState) {
+              return Center(child: Text(state.errorMsg));
+            } else {
+              return SizedBox();
+            }
+          },
+        ),
+      ],
+    );
+  }
+
+  // Movie details section UI
   Widget _buildMovieDetails(movie) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -155,6 +188,7 @@ class MovieDetailsScreen extends StatelessWidget {
     );
   }
 
+  // Similar movies section UI
   Widget _buildSimilarMoviesSection(List similarDetails) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

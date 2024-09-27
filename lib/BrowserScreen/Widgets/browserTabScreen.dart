@@ -1,17 +1,17 @@
-import 'package:cinema/AppColors.dart';
-import 'package:cinema/BrowserScreen/browserViewModel/browserTabStates.dart';
-import 'package:cinema/BrowserScreen/browserViewModel/browserTabViewModel.dart';
-import 'package:cinema/BrowserScreen/dataBrowser/responseBrowser/browserDiscoveryRespone.dart';
-import 'package:cinema/BrowserScreen/dataBrowser/responseBrowser/browserResponse.dart';
-import 'package:cinema/homeScreen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../AppColors.dart';
+import '../../HomeTab/widgets/homeTab.dart'; // Ensure this import is correct
+import '../browserViewModel/browserTabStates.dart';
+import '../browserViewModel/browserTabViewModel.dart';
+import '../dataBrowser/responseBrowser/browserDiscoveryRespone.dart';
+import '../dataBrowser/responseBrowser/browserResponse.dart';
 import 'Browseritem.dart';
 
 class BrowserTabScreen extends StatefulWidget {
-  static const String routeName = "browser";
+  static const String routeName = 'browser'; // Add route name if required
 
   const BrowserTabScreen({Key? key}) : super(key: key);
 
@@ -21,12 +21,14 @@ class BrowserTabScreen extends StatefulWidget {
 
 class _BrowserTabScreenState extends State<BrowserTabScreen> {
   late final BrowserTabViewModel viewModel;
+  String? selectedGenreId; // Add this variable to track selected genre ID
+  List<dynamic> discoveryMovies = []; // To store the discovery movie results
 
   @override
   void initState() {
     super.initState();
     viewModel = BrowserTabViewModel();
-    viewModel.getAllMovieList();
+    viewModel.getAllMovieList(); // Fetch all movie lists
   }
 
   @override
@@ -87,20 +89,24 @@ class _BrowserTabScreenState extends State<BrowserTabScreen> {
                         style: TextStyle(color: Colors.red, fontSize: 18.sp),
                       ),
                     );
-                  } else if (state is BrowserDiscoveryTabSuccessState) {
-                    var discoveryMovies =
-                        state.browserDiscoveryResponse.results ?? [];
+                  } else if (state is BrowserDiscoveryTabSuccessState ||
+                      discoveryMovies.isNotEmpty) {
+                    if (state is BrowserDiscoveryTabSuccessState) {
+                      discoveryMovies =
+                          state.browserDiscoveryResponse.results ?? [];
+                    }
                     return Column(
                       children: [
                         Expanded(
-                            child: _buildMovieGrid(
-                                genres: discoveryMovies, isDiscovery: true)),
+                          child: _buildMovieGrid(
+                              genres: discoveryMovies, isDiscovery: true),
+                        ),
                         ElevatedButton(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, HomeScreen.routeName);
-                            },
-                            child: Text('Go to Home'))
+                          onPressed: () {
+                            Navigator.pushNamed(context, Hometab.routeName);
+                          },
+                          child: const Text('Go to Home'),
+                        ),
                       ],
                     );
                   }
@@ -131,9 +137,20 @@ class _BrowserTabScreenState extends State<BrowserTabScreen> {
             onTap: () {
               if (!isDiscovery) {
                 String genreId = item.id.toString();
-                viewModel.getAllDiscoveryMovieList(genreId);
 
-                DefaultTabController.of(context).animateTo(1);
+                if (selectedGenreId != genreId) {
+                  // Check if genre has changed
+                  setState(() {
+                    selectedGenreId = genreId; // Update selected genre ID
+                    discoveryMovies.clear(); // Clear previous results
+                  });
+
+                  viewModel
+                      .getAllDiscoveryMovieList(genreId); // Fetch new movies
+
+                  DefaultTabController.of(context)
+                      .animateTo(1); // Switch to Discovery Tab
+                }
               }
             },
             child: BrowserItem(
