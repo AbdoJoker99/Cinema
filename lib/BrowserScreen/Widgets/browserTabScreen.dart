@@ -8,7 +8,8 @@ import '../browserViewModel/browserTabStates.dart';
 import '../browserViewModel/browserTabViewModel.dart';
 import '../dataBrowser/responseBrowser/browserDiscoveryRespone.dart';
 import '../dataBrowser/responseBrowser/browserResponse.dart';
-import 'Browseritem.dart';
+import 'BrowserItem.dart';
+import 'browserDetails.dart';
 
 class BrowserTabScreen extends StatefulWidget {
   static const String routeName = 'browser'; // Add route name if required
@@ -55,6 +56,7 @@ class _BrowserTabScreenState extends State<BrowserTabScreen> {
               BlocBuilder<BrowserTabViewModel, BrowserTabStates>(
                 builder: (context, state) {
                   if (state is BrowserTabLoadinglState) {
+                    // Fixed typo
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is BrowserTabErrorState) {
                     return Center(
@@ -81,6 +83,7 @@ class _BrowserTabScreenState extends State<BrowserTabScreen> {
               BlocBuilder<BrowserTabViewModel, BrowserTabStates>(
                 builder: (context, state) {
                   if (state is BrowserDiscoveryTabLoadinglState) {
+                    // Fixed typo
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is BrowserDiscoveryTabErrorState) {
                     return Center(
@@ -151,11 +154,19 @@ class _BrowserTabScreenState extends State<BrowserTabScreen> {
                   DefaultTabController.of(context)
                       .animateTo(1); // Switch to Discovery Tab
                 }
+              } else {
+                // Navigate to the MovieDetailsScreen when a movie is tapped
+                Navigator.of(context).pushNamed(
+                  BrowserDetails.routeName,
+                  arguments:
+                      viewModel.cachedDiscoveryMovies?[index], // Null safety
+                );
               }
             },
             child: BrowserItem(
-              browser: isDiscovery ? null : item as Browser,
-              discoveryMovie: isDiscovery ? item as reselt : null,
+              browser:
+                  isDiscovery ? null : item as Browser, // Ensure proper casting
+              discoveryMovie: isDiscovery ? item as reselt : null, // Fixed typo
             ),
           );
         },

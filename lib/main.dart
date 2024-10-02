@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'BrowserScreen/Widgets/browserDetails.dart';
 import 'BrowserScreen/Widgets/browserTabScreen.dart';
 import 'HomeTab/widgets/homeTab.dart';
 import 'MovieDetails(homeTab)/movie_details_screen.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
           initialRoute: SplashScreen.routeName,
           routes: {
             HomeScreen.routeName: (context) => HomeScreen(),
+            BrowserDetails.routeName: (context) => BrowserDetails(),
             SplashScreen.routeName: (context) => SplashScreen(),
             Hometab.routeName: (context) => Hometab(),
             Searchsceentab.routeName: (context) => Searchsceentab(),
