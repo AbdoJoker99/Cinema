@@ -56,4 +56,6 @@ class BrowserTabViewModel extends Cubit<BrowserTabStates> {
       emit(BrowserDiscoveryTabErrorState(errorMessage: e.toString()));
     }
   }
+
+  // Fetch similar movies based on the movie ID
 }

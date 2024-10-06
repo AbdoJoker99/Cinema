@@ -28,7 +28,7 @@ class Searchsceentab extends StatelessWidget {
                   TextField(
                     style: Theme.of(context)
                         .textTheme
-                        .titleMedium!
+                        .bodyMedium!
                         .copyWith(color: AppColors.whiteColorText),
                     controller: searchControllerText,
                     onChanged: (value) {

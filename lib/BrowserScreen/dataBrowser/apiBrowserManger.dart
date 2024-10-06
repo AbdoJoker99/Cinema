@@ -52,4 +52,23 @@ class ApibrowserManger {
       throw e;
     }
   }
+
+  Future<List<reselt>> fetchSimilarMovies(int movieId) async {
+    final url = Uri.https('$baseUrl/movie/$movieId/similar?api_key=$apiKey');
+
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        List<reselt> similarMovies = (data['results'] as List)
+            .map((movie) => reselt.fromJson(movie))
+            .toList();
+        return similarMovies;
+      } else {
+        throw Exception("Failed to load similar movies");
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }

@@ -1,12 +1,13 @@
 class BrowserDiscoveryResponse {
-  BrowserDiscoveryResponse(
-      {this.page,
-      this.results,
-      this.totalPages,
-      this.totalResults,
-      this.status_code,
-      this.status_message,
-      this.success});
+  BrowserDiscoveryResponse({
+    this.page,
+    this.results,
+    this.totalPages,
+    this.totalResults,
+    this.status_code,
+    this.status_message,
+    this.success,
+  });
 
   BrowserDiscoveryResponse.fromJson(dynamic json) {
     page = json['page'];
@@ -22,6 +23,7 @@ class BrowserDiscoveryResponse {
     status_code = json['status_code'];
     status_message = json['status_message'];
   }
+
   num? page;
   List<reselt>? results;
   num? totalPages;
@@ -58,6 +60,7 @@ class reselt {
     this.video,
     this.voteAverage,
     this.voteCount,
+    this.similarMovies, // Keep this here
   });
 
   reselt.fromJson(dynamic json) {
@@ -75,7 +78,16 @@ class reselt {
     video = json['video'];
     voteAverage = json['vote_average'];
     voteCount = json['vote_count'];
+
+    // Parse similar movies if present in the JSON response
+    if (json['similar'] != null) {
+      similarMovies = [];
+      json['similar'].forEach((v) {
+        similarMovies?.add(reselt.fromJson(v));
+      });
+    }
   }
+
   bool? adult;
   String? backdropPath;
   List<num>? genreIds;
@@ -90,6 +102,7 @@ class reselt {
   bool? video;
   num? voteAverage;
   num? voteCount;
+  List<reselt>? similarMovies; // Ensure this property is present
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -107,6 +120,12 @@ class reselt {
     map['video'] = video;
     map['vote_average'] = voteAverage;
     map['vote_count'] = voteCount;
+
+    // Add similar movies to JSON if present
+    if (similarMovies != null) {
+      map['similar'] = similarMovies?.map((v) => v.toJson()).toList();
+    }
+
     return map;
   }
 }

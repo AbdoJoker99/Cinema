@@ -28,3 +28,15 @@ class BrowserDiscoveryTabSuccessState extends BrowserTabStates {
   BrowserDiscoveryResponse browserDiscoveryResponse;
   BrowserDiscoveryTabSuccessState({required this.browserDiscoveryResponse});
 }
+
+class movieDiscoveryTabLoadinglState extends BrowserTabStates {}
+
+class movieDiscoveryTabErrorState extends BrowserTabStates {
+  String errorMessage;
+  movieDiscoveryTabErrorState({required this.errorMessage});
+}
+
+class movieDiscoveryTabSuccessState extends BrowserTabStates {
+  BrowserDiscoveryResponse movieDiscoveryResponse;
+  movieDiscoveryTabSuccessState({required this.movieDiscoveryResponse});
+}

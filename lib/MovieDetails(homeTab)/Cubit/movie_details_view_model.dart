@@ -1,6 +1,6 @@
+import 'package:cinema/HomeTab/Data/apiManger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../HomeTab/Data/apiManger.dart';
 import 'movie_states.dart';
 
 class MovieDetailsViewModel extends Cubit<MovieDetailsStates> {
@@ -9,8 +9,12 @@ class MovieDetailsViewModel extends Cubit<MovieDetailsStates> {
   Future<void> getAllDetails(int movieId) async {
     emit(MovieDetailsLoadingState());
     try {
+      // Fetching movie details
       final movieDetails = await ApiManager.getAllDetails(movieId);
       emit(MovieDetailsSuccessState(details: movieDetails));
+
+      // Fetching similar movies after getting movie details
+      await getAllSimilarDetails(movieId);
     } catch (e) {
       emit(MovieDetailsErrorState("An error occurred: $e"));
     }
