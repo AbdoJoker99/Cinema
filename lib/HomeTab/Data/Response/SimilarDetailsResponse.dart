@@ -1,34 +1,34 @@
 class SimilarDetailsResponse {
-  SimilarDetailsResponse({
-    this.page,
-    this.results,
-    this.totalPages,
-    this.totalResults,
-    this.success,
-    this.status_code,
-    this.status_message});
+  SimilarDetailsResponse(
+      {this.page,
+      this.results,
+      this.totalPages,
+      this.totalResults,
+      this.success,
+      this.status_code,
+      this.status_message});
 
   SimilarDetailsResponse.fromJson(dynamic json) {
     page = json['page'];
     if (json['results'] != null) {
       results = [];
       json['results'].forEach((v) {
-        results?.add(Results.fromJson(v));
+        results?.add(Resul.fromJson(v));
       });
     }
     totalPages = json['total_pages'];
     totalResults = json['total_results'];
-    success=json['success'];
+    success = json['success'];
     status_code = json['status_code'];
     status_message = json['status_message'];
   }
   num? page;
-  num?status_code;
-  List<Results>? results;
+  num? status_code;
+  List<Resul>? results;
   num? totalPages;
   num? totalResults;
-  String?status_message;
-  bool?success;
+  String? status_message;
+  bool? success;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -40,11 +40,10 @@ class SimilarDetailsResponse {
     map['total_results'] = totalResults;
     return map;
   }
-
 }
 
-class Results {
-  Results({
+class Resul {
+  Resul({
     this.adult,
     this.backdropPath,
     this.genreIds,
@@ -58,9 +57,10 @@ class Results {
     this.title,
     this.video,
     this.voteAverage,
-    this.voteCount,});
+    this.voteCount,
+  });
 
-  Results.fromJson(dynamic json) {
+  Resul.fromJson(dynamic json) {
     adult = json['adult'];
     backdropPath = json['backdrop_path'];
     genreIds = json['genre_ids'] != null ? json['genre_ids'].cast<num>() : [];
@@ -109,5 +109,4 @@ class Results {
     map['vote_count'] = voteCount;
     return map;
   }
-
 }

@@ -29,7 +29,8 @@ class DetailsResponse {
     this.video,
     this.voteAverage,
     this.voteCount,
-    this.videos,});
+    this.videos,
+  });
 
   DetailsResponse.fromJson(dynamic json) {
     adult = json['adult'];
@@ -45,7 +46,9 @@ class DetailsResponse {
     homepage = json['homepage'];
     id = json['id'];
     imdbId = json['imdb_id'];
-    originCountry = json['origin_country'] != null ? json['origin_country'].cast<String>() : [];
+    originCountry = json['origin_country'] != null
+        ? json['origin_country'].cast<String>()
+        : [];
     originalLanguage = json['original_language'];
     originalTitle = json['original_title'];
     overview = json['overview'];
@@ -72,9 +75,9 @@ class DetailsResponse {
         spokenLanguages?.add(SpokenLanguages.fromJson(v));
       });
     }
-    status_code=json['status_code'];
-    status_message=json['status_message'];
-    success=json['success'];
+    status_code = json['status_code'];
+    status_message = json['status_message'];
+    success = json['success'];
     status = json['status'];
     tagline = json['tagline'];
     title = json['title'];
@@ -84,12 +87,12 @@ class DetailsResponse {
     videos = json['videos'] != null ? Videos.fromJson(json['videos']) : null;
   }
   bool? adult;
-  bool?success;
-  String?status_message;
+  bool? success;
+  String? status_message;
   String? backdropPath;
   dynamic belongsToCollection;
   num? budget;
-  num?status_code;
+  num? status_code;
   List<Genres>? genres;
   String? homepage;
   num? id;
@@ -133,16 +136,19 @@ class DetailsResponse {
     map['popularity'] = popularity;
     map['poster_path'] = posterPath;
     if (productionCompanies != null) {
-      map['production_companies'] = productionCompanies?.map((v) => v.toJson()).toList();
+      map['production_companies'] =
+          productionCompanies?.map((v) => v.toJson()).toList();
     }
     if (productionCountries != null) {
-      map['production_countries'] = productionCountries?.map((v) => v.toJson()).toList();
+      map['production_countries'] =
+          productionCountries?.map((v) => v.toJson()).toList();
     }
     map['release_date'] = releaseDate;
     map['revenue'] = revenue;
     map['runtime'] = runtime;
     if (spokenLanguages != null) {
-      map['spoken_languages'] = spokenLanguages?.map((v) => v.toJson()).toList();
+      map['spoken_languages'] =
+          spokenLanguages?.map((v) => v.toJson()).toList();
     }
     map['status'] = status;
     map['tagline'] = tagline;
@@ -155,12 +161,12 @@ class DetailsResponse {
     }
     return map;
   }
-
 }
 
 class Videos {
   Videos({
-    this.results,});
+    this.results,
+  });
 
   Videos.fromJson(dynamic json) {
     if (json['results'] != null) {
@@ -179,7 +185,6 @@ class Videos {
     }
     return map;
   }
-
 }
 
 class Results {
@@ -193,7 +198,8 @@ class Results {
     this.type,
     this.official,
     this.publishedAt,
-    this.id,});
+    this.id,
+  });
 
   Results.fromJson(dynamic json) {
     iso6391 = json['iso_639_1'];
@@ -232,14 +238,14 @@ class Results {
     map['id'] = id;
     return map;
   }
-
 }
 
 class SpokenLanguages {
   SpokenLanguages({
     this.englishName,
     this.iso6391,
-    this.name,});
+    this.name,
+  });
 
   SpokenLanguages.fromJson(dynamic json) {
     englishName = json['english_name'];
@@ -257,13 +263,13 @@ class SpokenLanguages {
     map['name'] = name;
     return map;
   }
-
 }
 
 class ProductionCountries {
   ProductionCountries({
     this.iso31661,
-    this.name,});
+    this.name,
+  });
 
   ProductionCountries.fromJson(dynamic json) {
     iso31661 = json['iso_3166_1'];
@@ -278,7 +284,6 @@ class ProductionCountries {
     map['name'] = name;
     return map;
   }
-
 }
 
 class ProductionCompanies {
@@ -286,7 +291,8 @@ class ProductionCompanies {
     this.id,
     this.logoPath,
     this.name,
-    this.originCountry,});
+    this.originCountry,
+  });
 
   ProductionCompanies.fromJson(dynamic json) {
     id = json['id'];
@@ -307,13 +313,13 @@ class ProductionCompanies {
     map['origin_country'] = originCountry;
     return map;
   }
-
 }
 
 class Genres {
   Genres({
     this.id,
-    this.name,});
+    this.name,
+  });
 
   Genres.fromJson(dynamic json) {
     id = json['id'];
@@ -328,5 +334,4 @@ class Genres {
     map['name'] = name;
     return map;
   }
-
 }

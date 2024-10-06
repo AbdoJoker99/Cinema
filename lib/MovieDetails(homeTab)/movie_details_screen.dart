@@ -1,81 +1,144 @@
+import 'package:cinema/MovieDetails(homeTab)/similarMovieSection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../AppColors.dart';
+import '../AppColors.dart';
 import 'Cubit/movie_details_view_model.dart';
 import 'Cubit/movie_states.dart';
 import 'MovieDetailsSection.dart';
-import 'similarMovieDetails.dart';
 
-class MovieDetailsScreen extends StatelessWidget {
+class MovieDetailsScreen extends StatefulWidget {
   static const String routeName = 'movie_details';
   final int movieId;
 
   MovieDetailsScreen({required this.movieId});
 
   @override
+  State<MovieDetailsScreen> createState() => _MovieDetailsScreenState();
+}
+
+class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
+  late MovieDetailsViewModel cubit;
+
+  // State variables to manage loading and error states
+  bool _isLoadingDetails = true;
+  String? _detailsErrorMsg;
+  bool _isLoadingSimilarMovies = true;
+  String? _similarMoviesErrorMsg;
+
+  @override
+  void initState() {
+    super.initState();
+    cubit = MovieDetailsViewModel();
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    await cubit.getAllDetails(widget.movieId);
+    await cubit.getAllSimilarDetails(widget.movieId);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => MovieDetailsViewModel()..getAllDetails(movieId),
-      child: Scaffold(
-        backgroundColor: AppColors.backgroundColor,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_back, color: Colors.white),
+      create: (context) => cubit,
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: AppColors.backgroundColor,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back, color: Colors.white),
+            ),
           ),
-        ),
-        body: Padding(
-          padding: EdgeInsets.all(8.0.w),
-          child: BlocBuilder<MovieDetailsViewModel, MovieDetailsStates>(
-            builder: (context, state) {
+          body: BlocListener<MovieDetailsViewModel, MovieDetailsStates>(
+            listener: (context, state) {
+              // Handle loading and error states
               if (state is MovieDetailsLoadingState) {
-                return Center(child: CircularProgressIndicator());
+                setState(() {
+                  _isLoadingDetails = true;
+                  _detailsErrorMsg = null;
+                });
               } else if (state is MovieDetailsErrorState) {
-                return Center(
-                    child: Text(state.errorMsg,
-                        style: TextStyle(color: Colors.red)));
+                setState(() {
+                  _isLoadingDetails = false;
+                  _detailsErrorMsg = state.errorMsg;
+                });
               } else if (state is MovieDetailsSuccessState) {
-                // Show movie details
-                return SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Movie Details Section
-                      MovieDetailsSection(
-                          movieId: movieId, movie: state.details),
-                      Divider(color: Colors.grey.shade800),
-                      // Similar Movies Section
-                      BlocBuilder<MovieDetailsViewModel, MovieDetailsStates>(
-                        builder: (context, similarState) {
-                          if (similarState is MovieSimilarDetailsLoadingState) {
-                            return Center(child: CircularProgressIndicator());
-                          } else if (similarState
-                              is MovieSimilarDetailsErrorState) {
-                            return Center(
-                                child: Text(similarState.errorMsg,
-                                    style: TextStyle(color: Colors.red)));
-                          } else if (similarState
-                              is MovieSimilarDetailsSuccessState) {
-                            return SimilarMoviesSection(
-                                similarMovies: similarState.similarDetails);
-                          } else {
-                            return Center(
-                                child: Text('No similar movies found'));
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                );
+                setState(() {
+                  _isLoadingDetails = false;
+                  _detailsErrorMsg = null;
+                });
               }
-              return Center(child: Text('Something went wrong'));
+
+              if (state is MovieSimilarDetailsLoadingState) {
+                setState(() {
+                  _isLoadingSimilarMovies = true;
+                  _similarMoviesErrorMsg = null;
+                });
+              } else if (state is MovieSimilarDetailsErrorState) {
+                setState(() {
+                  _isLoadingSimilarMovies = false;
+                  _similarMoviesErrorMsg = state.errorMsg;
+                });
+              } else if (state is MovieSimilarDetailsSuccessState) {
+                setState(() {
+                  _isLoadingSimilarMovies = false;
+                  _similarMoviesErrorMsg = null;
+                });
+              }
             },
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Movie Details Section
+                  if (_isLoadingDetails)
+                    Center(child: CircularProgressIndicator())
+                  else if (_detailsErrorMsg != null)
+                    Container(
+                      height: 215.0,
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Failed to load movie details: $_detailsErrorMsg',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    )
+                  else
+                    MovieDetailsSection(
+                      movieId: widget.movieId,
+                      movie: cubit.movieDetails, // Pass movie details here
+                    ),
+
+                  SizedBox(height: 10.0.h), // Space between sections
+
+                  // Similar Movies Section
+                  if (_isLoadingSimilarMovies)
+                    Center(child: CircularProgressIndicator())
+                  else if (_similarMoviesErrorMsg != null)
+                    Container(
+                      height: 215.0,
+                      alignment: Alignment.center,
+                      child: Center(
+                        child: Text(
+                          'Failed to load similar movies: $_similarMoviesErrorMsg',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    )
+                  else
+                    SimilarMoviesSection(
+                      similarMovies: cubit
+                          .similarDetails.results, // Pass similar movies here
+                    ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

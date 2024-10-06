@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../MovieDetails(homeTab)/movie_details_screen.dart';
 import '../../firebase_utils.dart';
 import '../Data/Response/topRatedOrPopularResponse.dart';
 
@@ -37,8 +38,15 @@ class _MovieListState extends State<MovieList> {
     return CarouselSlider.builder(
       itemCount: _movies.length, // Number of movies in the list
       itemBuilder: (context, index, realIndex) {
-        return MovieCard(
-          moviecard: _movies[index], // Pass each movie to MovieCard
+        return InkWell(
+          onTap: () {
+            MaterialPageRoute(
+                builder: (context) =>
+                    MovieDetailsScreen(movieId: _movies[index].id!.toInt()));
+          },
+          child: MovieCard(
+            moviecard: _movies[index], // Pass each movie to MovieCard
+          ),
         );
       },
       options: CarouselOptions(
@@ -127,9 +135,7 @@ class _MovieCardState extends State<MovieCard> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 InkWell(
-                  onTap: () {
-                    // Navigation logic
-                  },
+                  onTap: () {},
                   child: Container(
                     width: 50.w,
                     height: 50.h,

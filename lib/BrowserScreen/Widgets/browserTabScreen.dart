@@ -4,12 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../AppColors.dart';
 import '../../HomeTab/widgets/homeTab.dart'; // Ensure this import is correct
+import '../../MovieDetails(homeTab)/movie_details_screen.dart';
 import '../browserViewModel/browserTabStates.dart';
 import '../browserViewModel/browserTabViewModel.dart';
 import '../dataBrowser/responseBrowser/browserDiscoveryRespone.dart';
 import '../dataBrowser/responseBrowser/browserResponse.dart';
 import 'BrowserItem.dart';
-import 'browserDetails.dart';
 
 class BrowserTabScreen extends StatefulWidget {
   static const String routeName = 'browser'; // Add route name if required
@@ -156,11 +156,11 @@ class _BrowserTabScreenState extends State<BrowserTabScreen> {
                 }
               } else {
                 // Navigate to the MovieDetailsScreen when a movie is tapped
-                Navigator.of(context).pushNamed(
-                  BrowserDetails.routeName,
-                  arguments:
-                      viewModel.cachedDiscoveryMovies?[index], // Null safety
-                );
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MovieDetailsScreen(
+                            movieId: discoveryMovies[index].id!.toInt())));
               }
             },
             child: BrowserItem(

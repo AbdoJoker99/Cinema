@@ -5,9 +5,11 @@ class MovieDetailsSection extends StatelessWidget {
   final int movieId;
   final dynamic movie; // Accept the movie details directly
 
-  const MovieDetailsSection(
-      {Key? key, required this.movieId, required this.movie})
-      : super(key: key);
+  const MovieDetailsSection({
+    Key? key,
+    required this.movieId,
+    required this.movie,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class MovieDetailsSection extends StatelessWidget {
         Stack(
           children: [
             Image.network(
-              movie.posterPath != null
+              movie?.posterPath != null
                   ? 'https://image.tmdb.org/t/p/w500${movie.posterPath}'
                   : 'https://via.placeholder.com/500x250?text=No+Image',
               width: double.infinity,
@@ -57,7 +59,7 @@ class MovieDetailsSection extends StatelessWidget {
         ),
         SizedBox(height: 10.h),
         Text(
-          movie.title ?? "No Title Available",
+          movie?.title ?? "No Title Available",
           style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
@@ -66,7 +68,7 @@ class MovieDetailsSection extends StatelessWidget {
         ),
         SizedBox(height: 8.h),
         Text(
-          '${movie.releaseDate ?? "No release date"}, ${movie.runtime != null ? "${movie.runtime} mins" : "No runtime"}',
+          '${movie?.releaseDate ?? "No release date"}, ${movie?.runtime != null ? "${movie.runtime} mins" : "No runtime"}',
           style: TextStyle(fontSize: 14.sp, color: Colors.grey),
         ),
         SizedBox(height: 10.h),
@@ -76,7 +78,7 @@ class MovieDetailsSection extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
-                movie.posterPath != null
+                movie?.posterPath != null
                     ? 'https://image.tmdb.org/t/p/w500${movie.posterPath}'
                     : 'https://via.placeholder.com/100x150?text=No+Image',
                 width: 129.w,
@@ -95,24 +97,24 @@ class MovieDetailsSection extends StatelessWidget {
                   Wrap(
                     spacing: 6.w,
                     runSpacing: 6.h,
-                    children: movie.genres != null
+                    children: movie?.genres != null && movie.genres.isNotEmpty
                         ? movie.genres.map<Widget>((genre) {
                             return Chip(
-                              label: Text(genre.name!),
+                              label: Text(genre.name ?? "Unknown Genre"),
                               backgroundColor: Colors.grey.shade400,
                             );
                           }).toList()
-                        : [
-                            Chip(label: Text("No Genres"))
-                          ], // Fallback if genres are null
+                        : [Chip(label: Text("No Genres"))],
                   ),
                   SizedBox(height: 10.h),
                   Text(
-                    movie.overview ?? "No description available",
+                    movie?.overview ?? "No description available",
                     maxLines: 2,
-                    overflow: TextOverflow.fade,
-                    style:
-                        TextStyle(color: Colors.grey.shade300, fontSize: 14.sp),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Colors.grey.shade300,
+                      fontSize: 14.sp,
+                    ),
                   ),
                   SizedBox(height: 10.h),
                   Row(
@@ -120,7 +122,7 @@ class MovieDetailsSection extends StatelessWidget {
                       Icon(Icons.star, color: Colors.amber),
                       SizedBox(width: 5.w),
                       Text(
-                        movie.voteAverage?.toString() ?? "No Rating",
+                        movie?.voteAverage?.toStringAsFixed(1) ?? "No Rating",
                         style: TextStyle(fontSize: 16.sp, color: Colors.white),
                       ),
                     ],

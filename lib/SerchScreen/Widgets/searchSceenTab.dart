@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../MovieDetails(homeTab)/movie_details_screen.dart';
 import '../cubit/viewModel/movie_State.dart';
 import '../cubit/viewModel/searchViewModel.dart';
 
@@ -81,7 +82,15 @@ class Searchsceentab extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final movie = viewmodel.searchlist[index];
                           return InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MovieDetailsScreen(
+                                          movieId: viewmodel
+                                              .searchlist[index].id!
+                                              .toInt())));
+                            },
                             child: Container(
                               padding: EdgeInsets.all(10.0),
                               margin: EdgeInsets.only(bottom: 15.0),

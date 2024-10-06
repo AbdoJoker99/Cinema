@@ -9,7 +9,7 @@ class MovieDetailsInitialState extends MovieDetailsStates {}
 class MovieDetailsLoadingState extends MovieDetailsStates {}
 
 class MovieDetailsSuccessState extends MovieDetailsStates {
-  final DetailsResponse details;
+  DetailsResponse details;
 
   MovieDetailsSuccessState({required this.details});
 }
@@ -22,7 +22,7 @@ class MovieDetailsErrorState extends MovieDetailsStates {
 class MovieSimilarDetailsLoadingState extends MovieDetailsStates {}
 
 class MovieSimilarDetailsSuccessState extends MovieDetailsStates {
-  final SimilarDetailsResponse similarDetails;
+  SimilarDetailsResponse similarDetails;
 
   MovieSimilarDetailsSuccessState({required this.similarDetails});
 }
