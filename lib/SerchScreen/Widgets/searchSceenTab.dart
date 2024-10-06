@@ -1,5 +1,6 @@
 import 'package:cinema/AppColors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -26,11 +27,18 @@ class Searchsceentab extends StatelessWidget {
               padding: const EdgeInsets.all(14.0),
               child: Column(
                 children: [
+                  SizedBox(height: 20.h),
                   TextField(
                     style: Theme.of(context)
                         .textTheme
                         .bodyMedium!
                         .copyWith(color: AppColors.whiteColorText),
+                    keyboardType: TextInputType.text,
+
+                    inputFormatters: [
+                      FilteringTextInputFormatter.deny(
+                          RegExp("[^a-zA-Zء-ي\\s]")),
+                    ], // Allow only Arabic and English characters
                     controller: searchControllerText,
                     onChanged: (value) {
                       viewmodel.searchMovie(query: value);

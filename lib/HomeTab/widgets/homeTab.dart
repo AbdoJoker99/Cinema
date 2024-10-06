@@ -8,7 +8,7 @@ import '../HomeTabViewModel/homeTabStates.dart';
 import '../HomeTabViewModel/homeTabViewModel.dart';
 import 'TopRatedSection.dart';
 import 'UpComingSection.dart';
-import 'movieCard.dart';
+import 'card.dart';
 
 class Hometab extends StatefulWidget {
   static const String routeName = "homeTab";
