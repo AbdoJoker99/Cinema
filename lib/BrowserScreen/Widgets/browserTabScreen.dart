@@ -55,7 +55,6 @@ class _BrowserTabScreenState extends State<BrowserTabScreen> {
               BlocBuilder<BrowserTabViewModel, BrowserTabStates>(
                 builder: (context, state) {
                   if (state is BrowserTabLoadinglState) {
-                    // Fixed typo
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is BrowserTabErrorState) {
                     return Center(
@@ -82,7 +81,6 @@ class _BrowserTabScreenState extends State<BrowserTabScreen> {
               BlocBuilder<BrowserTabViewModel, BrowserTabStates>(
                 builder: (context, state) {
                   if (state is BrowserDiscoveryTabLoadinglState) {
-                    // Fixed typo
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is BrowserDiscoveryTabErrorState) {
                     return Center(
@@ -97,14 +95,8 @@ class _BrowserTabScreenState extends State<BrowserTabScreen> {
                       discoveryMovies =
                           state.browserDiscoveryResponse.results ?? [];
                     }
-                    return Column(
-                      children: [
-                        Expanded(
-                          child: _buildMovieGrid(
-                              genres: discoveryMovies, isDiscovery: true),
-                        ),
-                      ],
-                    );
+                    return _buildMovieGrid(
+                        genres: discoveryMovies, isDiscovery: true);
                   }
                   return const Center(child: Text('No Data Available'));
                 },
@@ -145,7 +137,7 @@ class _BrowserTabScreenState extends State<BrowserTabScreen> {
                       .getAllDiscoveryMovieList(genreId); // Fetch new movies
 
                   DefaultTabController.of(context)
-                      .animateTo(1); // Switch to Discovery Tab
+                      ?.animateTo(1); // Switch to Discovery Tab
                 }
               } else {
                 // Navigate to the MovieDetailsScreen when a movie is tapped
@@ -157,8 +149,9 @@ class _BrowserTabScreenState extends State<BrowserTabScreen> {
               }
             },
             child: BrowserItem(
-              browser:
-                  isDiscovery ? null : item as Browser, // Ensure proper casting
+              browser: !isDiscovery
+                  ? item as Browser
+                  : null, // Ensure proper casting
               discoveryMovie: isDiscovery ? item as reselt : null, // Fixed typo
             ),
           );

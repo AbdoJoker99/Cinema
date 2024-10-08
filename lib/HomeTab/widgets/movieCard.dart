@@ -39,9 +39,15 @@ class _MovieListState extends State<MovieList> {
       itemBuilder: (context, index, realIndex) {
         return InkWell(
           onTap: () {
-            MaterialPageRoute(
-                builder: (context) =>
-                    MovieDetailsScreen(movieId: _movies[index].id!.toInt()));
+            // Use Navigator.push to navigate to MovieDetailsScreen
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MovieDetailsScreen(
+                  movieId: _movies[index].id!.toInt(), // Pass the movie ID
+                ),
+              ),
+            );
           },
           child: MovieCard(
             moviecard: _movies[index], // Pass each movie to MovieCard

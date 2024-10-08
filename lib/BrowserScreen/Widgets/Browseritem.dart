@@ -27,19 +27,28 @@ class BrowserItem extends StatelessWidget {
           ),
         ),
         Center(
-          child: Text(
-            _getItemName(),
-            style: TextStyle(
-              fontSize: 22.sp,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              shadows: [
-                Shadow(
-                  blurRadius: 10.0.r,
-                  color: Colors.black.withOpacity(0.7),
-                  offset: const Offset(2, 2),
-                ),
-              ],
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal:
+                    8.0.w), // Padding to prevent text from touching edges
+            child: Text(
+              _getItemName(),
+              style: TextStyle(
+                fontSize: 28.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                shadows: [
+                  Shadow(
+                    blurRadius: 10.0.r,
+                    color: Colors.black.withOpacity(0.7),
+                    offset: const Offset(2, 2),
+                  ),
+                ],
+              ),
+              maxLines: 2, // Limits the text to one line
+              overflow: TextOverflow
+                  .ellipsis, // Truncates the text with an ellipsis if it overflows
+              textAlign: TextAlign.center, // Align the text in the center
             ),
           ),
         ),
