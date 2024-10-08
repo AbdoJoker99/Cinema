@@ -27,7 +27,7 @@ class Searchsceentab extends StatelessWidget {
               padding: const EdgeInsets.all(14.0),
               child: Column(
                 children: [
-                  SizedBox(height: 40.h),
+                  SizedBox(height: 60.h),
                   TextField(
                     style: Theme.of(context)
                         .textTheme

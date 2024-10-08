@@ -30,7 +30,7 @@ class BrowserItem extends StatelessWidget {
           child: Text(
             _getItemName(),
             style: TextStyle(
-              fontSize: 32.sp,
+              fontSize: 22.sp,
               fontWeight: FontWeight.bold,
               color: Colors.white,
               shadows: [
@@ -58,8 +58,6 @@ class BrowserItem extends StatelessWidget {
 
   String _getDefaultImageForGenre() {
     switch (browser?.name?.toLowerCase()) {
-      case 'comedy':
-        return MyAssets.BestCommedies;
       case 'horror':
         return MyAssets.download4;
       case 'action':

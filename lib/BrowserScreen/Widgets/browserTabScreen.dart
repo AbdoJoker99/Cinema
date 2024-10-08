@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../AppColors.dart';
-import '../../HomeTab/widgets/homeTab.dart'; // Ensure this import is correct
 import '../../MovieDetails(homeTab)/movie_details_screen.dart';
 import '../browserViewModel/browserTabStates.dart';
 import '../browserViewModel/browserTabViewModel.dart';
@@ -103,12 +102,6 @@ class _BrowserTabScreenState extends State<BrowserTabScreen> {
                         Expanded(
                           child: _buildMovieGrid(
                               genres: discoveryMovies, isDiscovery: true),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, Hometab.routeName);
-                          },
-                          child: const Text('Go to Home'),
                         ),
                       ],
                     );

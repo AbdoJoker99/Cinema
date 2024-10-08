@@ -54,8 +54,8 @@ class SimilarMoviesSection extends StatelessWidget {
                           similarMovie.posterPath != null
                               ? 'https://image.tmdb.org/t/p/w500${similarMovie.posterPath}'
                               : 'https://via.placeholder.com/121x160?text=No+Image',
-                          width: 121.w,
-                          height: 161.h,
+                          width: 120.w,
+                          height: 140.h,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
                             return Center(
