@@ -49,11 +49,19 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back, color: Colors.white),
+            leading: Container(
+              padding: EdgeInsets.all(8.0), // Add padding
+              decoration: BoxDecoration(
+                color:
+                    Colors.black.withOpacity(0.2), // Container background color
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.arrow_back, color: Colors.white),
+              ),
             ),
           ),
           body: BlocListener<MovieDetailsViewModel, MovieDetailsStates>(
@@ -98,44 +106,61 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Movie Details Section
-                  if (_isLoadingDetails)
-                    Center(child: CircularProgressIndicator())
-                  else if (_detailsErrorMsg != null)
-                    Container(
-                      height: 215.0,
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Failed to load movie details: $_detailsErrorMsg',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    )
-                  else
-                    MovieDetailsSection(
-                      movieId: widget.movieId,
-                      movie: cubit.movieDetails, // Pass movie details here
+                  Container(
+                    padding:
+                        EdgeInsets.all(16.0), // Add padding to the container
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.05), // Background color
+                      borderRadius:
+                          BorderRadius.circular(12.0), // Rounded corners
                     ),
+                    child: _isLoadingDetails
+                        ? Center(child: CircularProgressIndicator())
+                        : _detailsErrorMsg != null
+                            ? Container(
+                                height: 215.0,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Failed to load movie details: $_detailsErrorMsg',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              )
+                            : MovieDetailsSection(
+                                movieId: widget.movieId,
+                                movie: cubit
+                                    .movieDetails, // Pass movie details here
+                              ),
+                  ),
 
                   SizedBox(height: 10.0.h), // Space between sections
 
                   // Similar Movies Section
-                  if (_isLoadingSimilarMovies)
-                    Center(child: CircularProgressIndicator())
-                  else if (_similarMoviesErrorMsg != null)
-                    Container(
-                      height: 215.0,
-                      alignment: Alignment.center,
-                      child: Center(
-                        child: Text(
-                          'Failed to load similar movies: $_similarMoviesErrorMsg',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ),
-                    )
-                  else
-                    SimilarMoviesSection(
-                      similarMovies: cubit
-                          .similarDetails.results, // Pass similar movies here
+                  Container(
+                    padding:
+                        EdgeInsets.all(16.0), // Add padding to the container
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.05), // Background color
+                      borderRadius:
+                          BorderRadius.circular(12.0), // Rounded corners
                     ),
+                    child: _isLoadingSimilarMovies
+                        ? Center(child: CircularProgressIndicator())
+                        : _similarMoviesErrorMsg != null
+                            ? Container(
+                                height: 215.0,
+                                alignment: Alignment.center,
+                                child: Center(
+                                  child: Text(
+                                    'Failed to load similar movies: $_similarMoviesErrorMsg',
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                              )
+                            : SimilarMoviesSection(
+                                similarMovies: cubit.similarDetails
+                                    .results, // Pass similar movies here
+                              ),
+                  ),
                 ],
               ),
             ),
