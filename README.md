@@ -2,7 +2,6 @@
 
 ## Table of Contents
 - [Overview](#overview)
-- [Features](#features)
 -  [API](#API)
 - [firebase](#Firebase)
 - [Screenshots](#screenshots)
@@ -16,12 +15,6 @@
   
 ## Overview
 This is a Flutter-based Cinema application that allows users to browse, search for, and manage their movie-watching tasks. The app integrates a movie database API to provide detailed information about various films, helping users discover and keep track of what they want to watch.  iOS devices.
-
-
-## Features
-- **Movie Search**: Search for movies using a movie database API.
-- **Movie Details**: View detailed information about movies, including title, synopsis, rating, release date, and more.
-- **Now Playing Movies**: Browse a list of currently playing movies in theaters.
 
 ## API
 - **Movie Search**: Retrieve movies based on user queries using a movie database API.
